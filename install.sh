@@ -1,5 +1,33 @@
 #!/bin/sh
 
+package='./install.sh'
+forceyes=false
+
+# parse args
+while test $# -gt 0; do
+    case "$1" in
+        -h|--help)
+            echo "$package - install gdb-peda, gdb-pwndbg, and gdb-gef"
+            echo " "
+            echo "$package [options]"
+            echo " "
+            echo "options:"
+            echo "-h, --help                show brief help"
+            echo "-y, --yes                 yes to all"
+            exit 0
+            ;;
+        -y|--yes)
+            forceyes=true
+            break
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+MY_DIRECTORY=`pwd`
+
 echo "[+] Checking for required dependencies..."
 if command -v git >/dev/null 2>&1 ; then
     echo "[-] Git found!"
@@ -16,7 +44,12 @@ fi
 # download peda and decide whether to overwrite if exists
 if [ -d ~/peda ] || [ -h ~/.peda ]; then
     echo "[-] PEDA found"
-    read -p "skip download to continue? (enter 'y' or 'n') " skip_peda
+
+    if [ "$forceyes" != true ]; then
+        read -p "skip download to continue? (enter 'y' or 'n') " skip_peda
+    else
+        skip_peda='n'
+    fi
 
     if [ $skip_peda = 'n' ]; then
         rm -rf ~/peda
@@ -33,7 +66,12 @@ fi
 # download pwndbg
 if [ -d ~/pwndbg ] || [ -h ~/.pwndbg ]; then
     echo "[-] Pwndbg found"
-    read -p "skip download to continue? (enter 'y' or 'n') " skip_pwndbg
+
+    if [ "$forceyes" != true ]; then
+        read -p "skip download to continue? (enter 'y' or 'n') " skip_pwndbg
+    else
+        skip_pwndbg='n'
+    fi
 
     if [ $skip_pwndbg = 'n' ]; then
         rm -rf ~/pwndbg
@@ -41,6 +79,8 @@ if [ -d ~/pwndbg ] || [ -h ~/.pwndbg ]; then
 
         cd ~/pwndbg
         ./setup.sh
+        
+        cd $MY_DIRECTORY
     else
         echo "Pwndbg skipped"
     fi
@@ -50,14 +90,16 @@ else
 
     cd ~/pwndbg
     ./setup.sh
+
+    cd $MY_DIRECTORY
 fi
 
 
 # download gef
 echo "[+] Downloading GEF..."
+rm -rf ~/gef
 git clone https://github.com/hugsy/gef.git ~/gef
 
-echo "ls: $(ls)"
 echo "[+] Setting .gdbinit..."
 cp gdbinit ~/.gdbinit
 
