@@ -57,7 +57,7 @@ fi
 echo "[+] Downloading GEF..."
 git clone https://github.com/hugsy/gef.git ~/gef
 
-
+echo "ls: $(ls)"
 echo "[+] Setting .gdbinit..."
 cp gdbinit ~/.gdbinit
 
