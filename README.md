@@ -20,5 +20,5 @@ Add the following lines to your Dockerfile:
 
 ```dockerfile
 RUN cd ~ && git clone https://github.com/ksalapatek/gdb-peda-pwndbg-gef-docker.git && \
-cd ./gdb-peda-pwndbg-gef-docker && ./install.sh -y
+cd ./gdb-peda-pwndbg-gef-docker && ./install.sh -y && cd /
 ```
