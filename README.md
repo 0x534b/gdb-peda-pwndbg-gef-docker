@@ -19,6 +19,6 @@ gdb-gef
 Add the following lines to your Dockerfile:
 
 ```dockerfile
-RUN cd ~ && git clone https://github.com/ksalapatek/gdb-peda-pwndbg-gef-docker.git && \
+RUN cd ~ && git clone https://github.com/0x534b/gdb-peda-pwndbg-gef-docker.git && \
 cd ./gdb-peda-pwndbg-gef-docker && ./install.sh -y && cd /
 ```
